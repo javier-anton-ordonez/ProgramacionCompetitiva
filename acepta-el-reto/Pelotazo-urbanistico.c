@@ -29,6 +29,23 @@ void casas(long long w, long long h) {
   printf("%lld\n", minimo);
 }
 
+void casas2(long long w, long long h) {
+  long long minimo = 1;
+
+  if (w == h) {
+    printf("%lld\n", minimo);
+    return;
+  }
+
+  long long mcd = maximo_comun_divisor(w, h);
+
+  long long area = w * h; // ya no overflow
+
+  minimo = area / (mcd * mcd);
+
+  printf("%lld\n", minimo);
+}
+
 int main() {
   int numCasos;
 
