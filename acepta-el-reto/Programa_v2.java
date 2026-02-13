@@ -15,72 +15,40 @@ public class Programa_v2 {
   static int mejorGlobal;
 
   static boolean diagonalLibre(boolean[][] esReina, int i, int j, int N) {
-    /*
-     * // Diagonal superior izquierda
-     * for (int x = i - 1; x >= 0; x--) {
-     * for (int y = j - 1; y >= 0; y--) {
-     * if (esReina[x][y])
-     * return false;
-     * }
-     * for (int y = j + 1; y < N; y++) {
-     * if (esReina[x][y])
-     * return false;
-     * }
-     * 
-     * }
-     * 
-     * // Diagonal inferior derecha
-     * for (int x = i + 1; x < N; x++) {
-     * for (int y = j - 1; y >= 0; y--) {
-     * if (esReina[x][y])
-     * return false;
-     * }
-     * 
-     * for (int y = j + 1; y < N; y++) {
-     * if (esReina[x][y])
-     * return false;
-     * }
-     * }
-     */
+
     int radio = 1;
-
-    int salido[] = { 0, 0, 0, 0 };
-
-    N = N - 1;
     do {
 
-      if (i - radio < 0) {
-        salido[0] = 1;
+      // ↖ arriba-izquierda
+      if (i - radio >= 0 && j - radio >= 0) {
+        if (esReina[i - radio][j - radio])
+          return false;
       }
 
-      if (i + radio > N) {
-        salido[1] = 1;
+      // ↗ arriba-derecha
+      if (i - radio >= 0 && j + radio < N) {
+        if (esReina[i - radio][j + radio])
+          return false;
       }
 
-      if (j + radio > N) {
-        salido[2] = 1;
+      // ↙ abajo-izquierda
+      if (i + radio < N && j - radio >= 0) {
+        if (esReina[i + radio][j - radio])
+          return false;
       }
 
-      if (j - radio < 0) {
-        salido[3] = 1;
+      // ↘ abajo-derecha
+      if (i + radio < N && j + radio < N) {
+        if (esReina[i + radio][j + radio])
+          return false;
       }
 
-      if (esReina[Math.max(i - radio, 0)][Math.max(j - radio, 0)]) {
-        return false;
-      }
-      if (esReina[Math.max(i - radio, 0)][Math.min(j + radio, N)]) {
-        return false;
-      }
-      // System.out.println(Math.min(i + radio, N));
-      // System.out.println(Math.max(j - radio, 0));
-      if (esReina[Math.min(i + radio, N)][Math.max(j - radio, 0)]) {
-        return false;
-      }
-      if (esReina[Math.min(i + radio, N)][Math.min(j + radio, N)]) {
-        return false;
-      }
       radio++;
-    } while (salido[0] + salido[1] + salido[2] + salido[3] < 4);
+
+    } while (i - radio >= 0 ||
+        i + radio < N ||
+        j - radio >= 0 ||
+        j + radio < N);
     return true;
   }
 
@@ -148,7 +116,6 @@ public class Programa_v2 {
       mejorGlobal = 0;
       infoTablero info = new infoTablero(N);
       boolean[][] esReina = new boolean[N][N];
-
       Torres_y_Reinas(tablero, esReina, Q, R, 0, info);
 
       System.out.println(mejorGlobal);
