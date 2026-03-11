@@ -7,31 +7,29 @@ void calcularradios(long long radio, long long cordx, long long cordy, long long
 
   long long cordPtox = cordx - cordcirx;
   long long cordPtoy = cordy - cordciry;
-  long long radio2 = radio * radio;
-  long long midradio = radio / 2;
-
-  if (cordPtox * cordPtox + cordPtoy * cordPtoy <= radio2) {
+  long long mid = radio / 2;
+  if (cordPtox * cordPtox + cordPtoy * cordPtoy <= radio * radio) {
     (*numero)++;
   }
-  cordPtox = cordx - (cordcirx + radio);
-  cordPtoy = cordy - cordciry;
-  if ((cordPtox * cordPtox) + (cordPtoy * cordPtoy) <= radio2)
-    calcularradios(midradio, cordx, cordy, cordcirx + radio, cordciry, numero);
+  switch ((cordPtox < 0) * 2 + (cordPtoy < 0)) {
+    case 0:
+      calcularradios(mid, cordx, cordy, cordcirx + radio, cordciry, numero);
+      calcularradios(mid, cordx, cordy, cordcirx, cordciry + radio, numero);
+      break;
+    case 1:
+      calcularradios(mid, cordx, cordy, cordcirx + radio, cordciry, numero);
+      calcularradios(mid, cordx, cordy, cordcirx, cordciry - radio, numero);
+      break;
+    case 2:
+      calcularradios(mid, cordx, cordy, cordcirx - radio, cordciry, numero);
+      calcularradios(mid, cordx, cordy, cordcirx, cordciry + radio, numero);
+      break;
 
-  cordPtox = cordx - (cordcirx - radio);
-  cordPtoy = cordy - cordciry;
-  if ((cordPtox * cordPtox) + (cordPtoy * cordPtoy) <= radio2)
-    calcularradios(midradio, cordx, cordy, cordcirx - radio, cordciry, numero);
-
-  cordPtox = cordx - cordcirx;
-  cordPtoy = cordy - (cordciry + radio);
-  if ((cordPtox * cordPtox) + (cordPtoy * cordPtoy) <= radio2)
-    calcularradios(midradio, cordx, cordy, cordcirx, cordciry + radio, numero);
-
-  cordPtox = cordx - cordcirx;
-  cordPtoy = cordy - (cordciry - radio);
-  if ((cordPtox * cordPtox) + (cordPtoy * cordPtoy) <= radio2)
-    calcularradios(midradio, cordx, cordy, cordcirx, cordciry - radio, numero);
+    case 3:
+      calcularradios(mid, cordx, cordy, cordcirx - radio, cordciry, numero);
+      calcularradios(mid, cordx, cordy, cordcirx, cordciry - radio, numero);
+      break;
+  }
 }
 
 int main() {
@@ -43,8 +41,29 @@ int main() {
   }
   return 0;
 }
+
 /*
- *
+  if (cordPtox >= 0 && cordPtoy >= 0) {
+    calcularradios(mid, cordx, cordy, cordcirx + radio,
+ cordciry, numero); calcularradios(mid, cordx, cordy, cordcirx,
+ cordciry + radio, numero);
+
+  } else if (cordPtox < 0 && cordPtoy >= 0) {
+    calcularradios(mid, cordx, cordy, cordcirx - radio,
+ cordciry, numero); calcularradios(mid, cordx, cordy, cordcirx,
+ cordciry + radio, numero);
+
+  } else if (cordPtox < 0 && cordPtoy < 0) {
+    calcularradios(mid, cordx, cordy, cordcirx - radio,
+ cordciry, numero); calcularradios(mid, cordx, cordy, cordcirx,
+ cordciry - radio, numero);
+
+  } else {
+    calcularradios(mid, cordx, cordy, cordcirx + radio,
+ cordciry, numero); calcularradios(mid, cordx, cordy, cordcirx,
+ cordciry - radio, numero);
+  }
+
  *  if (sqrt(cordx * cordx + cordy * cordy) > radio) {
     return numero;
   } else {
